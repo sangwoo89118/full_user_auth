@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
 import { renderInput } from '../helpers/'
-
+import {signIn} from '../actions';
 
 class SignIn extends Component {
 
@@ -10,12 +11,14 @@ class SignIn extends Component {
 
     handleSignIn(vals){
         console.log('Values::::', vals);
+        this.props.signIn(vals);
     }
 
 
     render() {
 
-        const { handleSubmit } = this.props;
+        const { handleSubmit, authError } = this.props;
+        console.log(this.props);
 
 
         return (
@@ -28,6 +31,7 @@ class SignIn extends Component {
                             <form onSubmit={handleSubmit(this.handleSignIn.bind(this))}>
                                 <Field name='email' type='text' placeholder='Enter email address' component={renderInput}/>
                                 <Field name='password' type='password' placeholder='Enter your password' component={renderInput}/>
+                                <p className="center-align red-text">{authError}</p>
                                 <div className="right-align">
                                     <button className="btn blue darken-4">Sign In</button>
                                 </div>
@@ -60,10 +64,17 @@ function validate(values){
 SignIn = reduxForm({
     form: 'sign-in',
     validate: validate
-})(SignIn)
+})(SignIn);
+
+function mapStateToProps(state){
+    return{
+        authError: state.user.error
+    }
+}
 
 
-export default SignIn;
+export default connect(mapStateToProps,{signIn})(SignIn);
+
 
 
 
