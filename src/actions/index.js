@@ -11,6 +11,11 @@ export function signUp(cred){
             console.log('Resp from Sign Up', resp);
             localStorage.setItem('token', resp.data.token)
             dispatch({ type: types.SIGN_Up });
+        }).catch(err=>{
+            dispatch({
+                type: types.ERROR,
+                payload: err.response.data.error
+            })
         })
 
     }
