@@ -46,7 +46,33 @@ export function getQuote() {
         headers: { authorization: localStorage.getItem("token") }
       })
       .then(resp => {
-        console.log("quote request resp: ", resp);
+        console.log('resp', resp);
+        dispatch({
+            type: types.GET_QUOTE,
+            payload: resp.data.message
+        })
       });
   };
 }
+
+
+
+export function logout(){
+    localStorage.removeItem('token');
+
+    return{
+        type: types.LOG_OUT
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
